@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import logic.GetBiler;
+import logic.getKunde;
 import logic.opretLaan;
 public class InventarUI {
 
@@ -35,7 +36,7 @@ public class InventarUI {
 		private String bilIDGetText, bilnavnGetText, bilprisGetText, inventarGetText, bilnavn;
 		private Label opretStatusLbl;
 		private Scene scene;
-		private int bilid, bilpris, inventar;
+		private int bilid, bilpris, bilinventar;
 		private Pane pane;
 		private Image ferrari;
 		private ImageView ferraripic;
@@ -46,21 +47,21 @@ public class InventarUI {
 		@SuppressWarnings("unchecked")
 		public void start() {
 			opretInventarStage = new Stage();
-			opretInventarStage.setTitle("Ferrari lånesystem");
+			opretInventarStage.setTitle("Ferrari lÃ¥nesystem");
 			opretInventarStage.getIcons()
 					.add(new Image("https://i.pinimg.com/564x/c9/87/c8/c987c8a5c896fca22c5cfbd62edb7359.jpg"));
 
-			// Sætter pane + billede
+			// SÃ¦tter pane + billede
 			pane = new Pane();
 			ferrari = new Image(
 					"https://3.bp.blogspot.com/-DRM75enaO7s/VDrpAiCm55I/AAAAAAAABGM/VnsBvuXIygU/s1600/Ferrari%2BCar%2Blogos.jpg%22");
 			pane.setPrefHeight(670.0);
 			ferraripic = new ImageView();
 
-			// Sætter knap
-			opdaterInventarBtn = new Button("Tilføj bil til bilinventar");
+			// SÃ¦tter knap
+			opdaterInventarBtn = new Button("TilfÃ¸j bil til bilinventar");
 
-			// Sætter TField
+			// SÃ¦tter TField
 			bilIDTF = new TextField();
 			bilnavnTF = new TextField();
 			inventarTF = new TextField();
@@ -71,7 +72,7 @@ public class InventarUI {
 			bilnavnTF.setEditable(false);
 			inventarTF.setEditable(false);
 			bilprisTF.setEditable(false);
-			opretInventarStage.setResizable(false);
+			opretInventarStage.setResizable(arg0);
 
 			// TField lokationer
 			bilIDTF.relocate(350, 195.0);
@@ -94,7 +95,7 @@ public class InventarUI {
 			SoegTField.setLayoutY(25);
 			SoegTField.setPrefHeight(35);
 			SoegTField.setPrefWidth(250);
-			SoegTField.setPromptText("Søg - fx tlf. nr.");
+			SoegTField.setPromptText("SÃ¸g - fx tlf. nr.");
 			SoegTField.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
 
 			ferraripic.setFitWidth(350);
@@ -102,7 +103,7 @@ public class InventarUI {
 			ferraripic.setImage(ferrari);
 			ferraripic.relocate(305, 20);
 
-			// Sætter prompt text til kun at blive vist når et bogstav bliver indsat
+			// SÃ¦tter prompt text til kun at blive vist nÃ¥r et bogstav bliver indsat
 			
 			bilprisTF.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
 			inventarTF.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
@@ -112,10 +113,10 @@ public class InventarUI {
 			bilIDTF.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
 			bilnavnTF.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
 			
-			// Sætter pane baggrundsfarve
+			// SÃ¦tter pane baggrundsfarve
 			pane.setStyle("-fx-background-color: #F40808");
 
-			// Sætter prompt text
+			// SÃ¦tter prompt text
 			bilIDTF.setPromptText("Fornavn");
 			bilnavnTF.setPromptText("Efternavn");
 		
@@ -147,8 +148,8 @@ public class InventarUI {
 
 			ColumnBilinventar.setCellValueFactory(e -> {
 				Biler blr = e.getValue();
-				inventar = blr.getInventar();
-				String bilinventarString = Integer.toString(inventar);
+				bilinventar = blr.getInventar();
+				String bilinventarString = Integer.toString(bilinventar);
 				return new SimpleStringProperty(bilinventarString);
 			});
 
@@ -156,7 +157,7 @@ public class InventarUI {
 			bilTable.setItems(bilList);
 			udfyldTbl();
 
-			// Sætter TField til kun at tal kan sættes
+			// SÃ¦tter TField til kun at tal kan sÃ¦ttes
 
 
 			bilprisTF.setTextFormatter(new TextFormatter<>(c -> {
@@ -173,7 +174,7 @@ public class InventarUI {
 				}
 			}));
 
-			// Sætter font størrelser
+			// SÃ¦tter font stÃ¸rrelser
 			SoegTField.setFont(new Font(18));
 			opretStatusLbl.setFont(new Font(24));
 			bilnavnTF.setFont(new Font(14));
@@ -183,7 +184,7 @@ public class InventarUI {
 			inventarTF.setFont(new Font(14));
 	
 
-			// Tilføj til pane
+			// TilfÃ¸j til pane
 			pane.getChildren().addAll(bilIDTF, bilnavnTF, inventarTF, bilprisTF, opdaterInventarBtn, opretStatusLbl, ferraripic,
 					SoegTField, bilTable);
 
@@ -192,13 +193,15 @@ public class InventarUI {
 			opretInventarStage.setScene(scene);
 			opretInventarStage.show();
 
-			// Sætter set on action på knap
+			// SÃ¦tter set on action pÃ¥ knap
 		//	opdaterInventarBtn.setOnAction(e -> checkOpdatering());
 
-			// Sætter mouseevent på tabel
-			opdaterInventarBtn.setOnAction(e -> inventarUpdate(bilid, inventar));
+			// SÃ¦tter mouseevent pÃ¥ tabel
+			opdaterInventarBtn.setOnAction(e -> inventarUpdate(bilid, bilinventar));
 			bilTable.setOnMouseClicked((MouseEvent event) -> {
+				if (event.getClickCount() > 0) {
 					setTFields();
+				}
 			});
 		}
 
@@ -213,21 +216,16 @@ public class InventarUI {
 			
 		}
 		 public void inventarUpdate(int bilid, int bilinventar) {
-			 if (fieldsEmpty() == true) {
-				 fieldsEmpty();
-			 }
-				 
-			 else if (bilTable.getSelectionModel().getSelectedItem() != null && fieldsEmpty() == false) {
+			 if (bilTable.getSelectionModel().getSelectedItem() != null) {
 					Biler selectedBil = bilTable.getSelectionModel().getSelectedItem();
 					bilid = selectedBil.getBilId();
 			 opretLaan oprLaanDB = new opretLaan();
+			 System.out.println("Gamle bilinventar var: " + bilinventar);
 			 bilinventar +=1;
+			 
+			 System.out.println("Ny bilinventar er: " + bilinventar);
 		        oprLaanDB.inventarUpdate(bilid, bilinventar);
 		        opdaterInventarSuccess();
-		        opdaterTable();
-		        inventar++;
-		        String inventarString = Integer.toString(inventar);
-		        inventarTF.setText(inventarString);
 			 }
 		    }
 
@@ -238,7 +236,6 @@ public class InventarUI {
 			inventarGetText = inventarTF.getText();
 			
 			if (bilIDGetText.isEmpty() || bilnavnGetText.isEmpty() || bilprisGetText.isEmpty() || inventarGetText.isEmpty()) {
-				opdaterFejl();
 				return true;
 			}
 			return false;
@@ -258,8 +255,8 @@ public class InventarUI {
 				bilid = selectedBil.getBilId();
 				bilnavn = selectedBil.getBilnavn();
 				bilpris = selectedBil.getBilPris();
-				inventar = selectedBil.getInventar();
-				String inventarString = Integer.toString(inventar);
+				bilinventar = selectedBil.getInventar();
+				String inventarString = Integer.toString(bilinventar);
 				String bilprisString = Integer.toString(bilpris);
 				String bilidString = Integer.toString(bilid);
 				
@@ -267,7 +264,6 @@ public class InventarUI {
 				bilnavnTF.setText(bilnavn);
 				bilprisTF.setText(bilprisString);
 				inventarTF.setText(inventarString);
-			
 			}
 		}
 
@@ -283,7 +279,7 @@ public class InventarUI {
 			bilList = FXCollections.observableList(billgc.getAllBilerInfo());
 			FilteredList<Biler> filteredData = new FilteredList<>(bilList, p -> true);
 
-			// Søg funktion
+			// SÃ¸g funktion
 			SoegTField.textProperty().addListener((observable, oldValue, newValue) -> {
 				filteredData.setPredicate(formSearch -> {
 					if (newValue == null || newValue.isEmpty()) {
@@ -302,7 +298,7 @@ public class InventarUI {
 			SortedList<Biler> sortedData = new SortedList<>(filteredData);
 			sortedData.comparatorProperty().bind(bilTable.comparatorProperty());
 
-			// Tilføjer sorteret og filtreret data til vores TableView
+			// TilfÃ¸jer sorteret og filtreret data til vores TableView
 			bilTable.setItems(sortedData);
 		}
 	}
