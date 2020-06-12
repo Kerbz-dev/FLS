@@ -72,7 +72,7 @@ public class InventarUI {
 			bilnavnTF.setEditable(false);
 			inventarTF.setEditable(false);
 			bilprisTF.setEditable(false);
-			opretInventarStage.setResizable(arg0);
+			opretInventarStage.setResizable(false);
 
 			// TField lokationer
 			bilIDTF.relocate(350, 195.0);
